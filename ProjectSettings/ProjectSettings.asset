@@ -462,7 +462,7 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
-    UNet: 0
+    UNet: 1
   cloudProjectId: e78aedc0-f251-4473-8b8a-e2fb7f2c8352
   projectName: CatanUnity
   organizationId: kevin-3576614
