@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.defs
 {
-    enum ResourceTypes
+    public enum ResourceTypes
     {
         Ore,
         Sheep,
