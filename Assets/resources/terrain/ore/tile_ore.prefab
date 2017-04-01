@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33837924694598164}
   - component: {fileID: 23343229093340386}
   - component: {fileID: 95428422270702816}
+  - component: {fileID: 114116807730423072}
   m_Layer: 0
   m_Name: tile_ore
   m_TagString: Untagged
@@ -97,3 +98,16 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114116807730423072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1100608382167046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2206acabc27a1fc4f856f81a44cbf865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  HexCoords: {x: 0, y: 0}
