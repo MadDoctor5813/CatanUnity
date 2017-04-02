@@ -36,8 +36,10 @@ public class Board : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            Instantiate(oreTilePrefab, this.transform.TransformPoint(HexCoordsToLocalCoords(new Vector2(x, startZ))),
-                Quaternion.Euler(-90, 0, -90), this.transform);
+            Vector2 hexCoords = new Vector2(x, startZ);
+            Tile tile = Instantiate(oreTilePrefab, this.transform.TransformPoint(HexCoordsToLocalCoords(hexCoords)),
+                Quaternion.Euler(-90, 0, -90), this.transform).GetComponent<Tile>();
+            tile.HexCoords = hexCoords;
             //hex coords increase by two every time we move up one hex
             startZ += 2;
         }
