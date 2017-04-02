@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 
-    public ResourceTypes Type;
+    public TileTypes Type;
     public Vector2 HexCoords;
 
 	void Start ()

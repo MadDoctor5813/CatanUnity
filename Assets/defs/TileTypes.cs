@@ -5,12 +5,13 @@ using System.Text;
 
 namespace Assets.defs
 {
-    public enum ResourceTypes
+    public enum TileTypes
     {
         Ore,
         Sheep,
         Wood,
-        Clay,
-        Wheat
+        Brick,
+        Wheat,
+        Desert
     }
 }

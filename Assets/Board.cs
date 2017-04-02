@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
 
     private void GenerateMap()
     {
-        oreTilePrefab = LoadTilePrefab(ResourceTypes.Ore);
+        oreTilePrefab = LoadTilePrefab(TileTypes.Ore);
         //generate columns of the map
         GenerateMapColumn(-2, -2, 3);
         GenerateMapColumn(-1, -3, 4);
@@ -43,7 +43,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private GameObject LoadTilePrefab(ResourceTypes resource)
+    private GameObject LoadTilePrefab(TileTypes resource)
     {
         string resourceStr = resource.ToString().ToLower();
         return Resources.Load<GameObject>(string.Format("terrain/{0}/tile_{0}", resourceStr));
