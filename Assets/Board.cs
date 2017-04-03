@@ -6,13 +6,16 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
 
-    private GameObject oreTilePrefab;
+    public List<GameObject> TilePrefabs;
 
     private const float HexRadius = 1f;
     private const float InnerHexRadius = 0.866f * HexRadius;
 
+    private System.Random random;
+
 	void Start ()
     {
+        random = new System.Random();
         GenerateMap();
 	}
 	
@@ -23,7 +26,6 @@ public class Board : MonoBehaviour
 
     private void GenerateMap()
     {
-        oreTilePrefab = LoadTilePrefab(TileTypes.Ore);
         //generate columns of the map
         GenerateMapColumn(-2, -2, 3);
         GenerateMapColumn(-1, -3, 4);
@@ -37,7 +39,7 @@ public class Board : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector2 hexCoords = new Vector2(x, startZ);
-            Tile tile = Instantiate(oreTilePrefab, this.transform.TransformPoint(HexCoordsToLocalCoords(hexCoords)),
+            Tile tile = Instantiate(TilePrefabs[random.Next(TilePrefabs.Count)], this.transform.TransformPoint(HexCoordsToLocalCoords(hexCoords)),
                 Quaternion.Euler(-90, 0, -90), this.transform).GetComponent<Tile>();
             tile.HexCoords = hexCoords;
             //hex coords increase by two every time we move up one hex
