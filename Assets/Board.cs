@@ -26,21 +26,35 @@ public class Board : MonoBehaviour
 
     private void GenerateMap()
     {
+        //generate the list of tiles
+        List<GameObject> tileList = new List<GameObject>();
+        foreach (GameObject prefab in TilePrefabs)
+        {
+            TileTypes type = prefab.GetComponent<Tile>().Type;
+            int tileCount = TileInfo.TileCounts[type];
+            for (int i = 0; i < tileCount; i++)
+            {
+                tileList.Add(prefab);
+            }
+        }
         //generate columns of the map
-        GenerateMapColumn(-2, -2, 3);
-        GenerateMapColumn(-1, -3, 4);
-        GenerateMapColumn(0, -4, 5);
-        GenerateMapColumn(1, -3, 4);
-        GenerateMapColumn(2, -2, 3);
+        GenerateMapColumn(-2, -2, 3, tileList);
+        GenerateMapColumn(-1, -3, 4, tileList);
+        GenerateMapColumn(0, -4, 5, tileList);
+        GenerateMapColumn(1, -3, 4, tileList);
+        GenerateMapColumn(2, -2, 3, tileList);
     }
 
-    private void GenerateMapColumn(int x, int startZ, int count)
+    private void GenerateMapColumn(int x, int startZ, int count, List<GameObject> tileList)
     {
         for (int i = 0; i < count; i++)
         {
             Vector2 hexCoords = new Vector2(x, startZ);
-            Tile tile = Instantiate(TilePrefabs[random.Next(TilePrefabs.Count)], this.transform.TransformPoint(HexCoordsToLocalCoords(hexCoords)),
+            int chosenTileIdx = random.Next(tileList.Count);
+            Tile tile = Instantiate(tileList[chosenTileIdx], this.transform.TransformPoint(HexCoordsToLocalCoords(hexCoords)),
                 Quaternion.Euler(-90, 0, -90), this.transform).GetComponent<Tile>();
+            //delete the chosen tile from the list so we don't use it again
+            tileList.RemoveAt(chosenTileIdx);
             tile.HexCoords = hexCoords;
             //hex coords increase by two every time we move up one hex
             startZ += 2;
