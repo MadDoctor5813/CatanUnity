@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
 {
 
     public TileTypes Type;
-    public Vector2 HexCoords;
+    public HexCoords HexCoords;
 
 	void Start ()
     {
