@@ -64,10 +64,4 @@ public class Board : MonoBehaviour
         }
     }
 
-    private GameObject LoadTilePrefab(TileTypes resource)
-    {
-        string resourceStr = resource.ToString().ToLower();
-        return Resources.Load<GameObject>(string.Format("terrain/{0}/tile_{0}", resourceStr));
-    }
-
 }
