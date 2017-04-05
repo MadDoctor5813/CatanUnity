@@ -15,10 +15,13 @@ public class Board : MonoBehaviour
 
     private Dictionary<HexCoords, Tile> tileMap;
 
+    private BoxCollider boardCollider;
+
 	void Start ()
     {
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
+        boardCollider = GetComponent<BoxCollider>();
         GenerateMap();
 	}
 	
@@ -46,6 +49,7 @@ public class Board : MonoBehaviour
         GenerateMapColumn(0, -2, 5, tileList);
         GenerateMapColumn(1, -2, 4, tileList);
         GenerateMapColumn(2, -2, 3, tileList);
+        GenerateCollider();
     }
 
     private void GenerateMapColumn(int x, int startZ, int count, List<GameObject> tileList)
@@ -62,6 +66,18 @@ public class Board : MonoBehaviour
             tileMap.Add(hexCoords, tile);
             startZ++;
         }
+    }
+
+    private void GenerateCollider()
+    {
+        Bounds colliderBounds = new Bounds();
+        foreach (Tile tile in tileMap.Values)
+        {
+            Bounds tileBounds = tile.gameObject.GetComponent<Renderer>().bounds;
+            colliderBounds.Encapsulate(tileBounds);
+        }
+        boardCollider.center = colliderBounds.center - transform.position;
+        boardCollider.size = colliderBounds.size;
     }
 
 }
