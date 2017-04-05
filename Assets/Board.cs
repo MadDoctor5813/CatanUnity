@@ -13,9 +13,12 @@ public class Board : MonoBehaviour
 
     private System.Random random;
 
+    private Dictionary<HexCoords, Tile> tileMap;
+
 	void Start ()
     {
         random = new System.Random();
+        tileMap = new Dictionary<HexCoords, Tile>();
         GenerateMap();
 	}
 	
@@ -56,6 +59,7 @@ public class Board : MonoBehaviour
             //delete the chosen tile from the list so we don't use it again
             tileList.RemoveAt(chosenTileIdx);
             tile.HexCoords = hexCoords;
+            tileMap.Add(hexCoords, tile);
             startZ++;
         }
     }
