@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Assets.util
 {
+    [System.Serializable]
     public class HexCoords
     {
 
