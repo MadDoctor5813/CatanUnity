@@ -10,14 +10,11 @@ namespace Assets.util
     public class HexCoords
     {
 
-        public const float HexRadius = 1f;
-        public const float InnerHexRadius = 0.866f * HexRadius;
+        private static readonly Vector2 XBasisHex = new Vector2(1.5f * HexInfo.HexRadius, HexInfo.InnerHexRadius);
+        private static readonly Vector2 ZBasisHex = new Vector2(0, 2f * HexInfo.InnerHexRadius);
 
-        private static readonly Vector2 XBasisHex = new Vector2(1.5f * HexRadius, InnerHexRadius);
-        private static readonly Vector2 ZBasisHex = new Vector2(0, 2f * InnerHexRadius);
-
-        private static readonly Vector2 XBasisPixel = new Vector2(2f / (3 * HexRadius), -1f / (3f * HexRadius));
-        private static readonly Vector2 ZBasisPixel = new Vector2(0, 1f / (2f * InnerHexRadius));
+        private static readonly Vector2 XBasisPixel = new Vector2(2f / (3 * HexInfo.HexRadius), -1f / (3f * HexInfo.HexRadius));
+        private static readonly Vector2 ZBasisPixel = new Vector2(0, 1f / (2f * HexInfo.InnerHexRadius));
 
 
         [SerializeField]
