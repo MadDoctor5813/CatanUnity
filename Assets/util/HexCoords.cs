@@ -72,6 +72,17 @@ namespace Assets.util
             Vector3 cubeHexCoords = new Vector3(axialHexCoords.x, -axialHexCoords.x - axialHexCoords.y, axialHexCoords.y);
             return RoundHexCoords(cubeHexCoords);
         }
+        
+        public static Vector3[] GetCorners(HexCoords hexCoords)
+        {
+            Vector3 hexPos = ToLocalCoords(hexCoords);
+            Vector3[] corners = new Vector3[6];
+            for (int i = 0; i < 6; i++)
+            {
+                corners[i] = HexInfo.HexCornerOffsets[i] + hexPos;
+            }
+            return corners;
+        }
 
         private static HexCoords RoundHexCoords(Vector3 hexCoords)
         {
