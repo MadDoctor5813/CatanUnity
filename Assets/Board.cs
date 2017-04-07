@@ -12,9 +12,6 @@ public class Board : MonoBehaviour
     public GameObject GhostSettlementPrefab;
     private GameObject ghostSettlement;
 
-    private const float HexRadius = 1f;
-    private const float InnerHexRadius = 0.866f * HexRadius;
-
     private System.Random random;
 
     private Dictionary<HexCoords, Tile> tileMap;
