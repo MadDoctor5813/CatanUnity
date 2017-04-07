@@ -31,5 +31,57 @@ namespace Assets.util
             return coords;
         }
 
+        public static HexIntersection GetNearestIntersection(Vector3 position)
+        {
+            //get the current hex the position is in
+            HexCoords current = HexCoords.FromLocalCoords(position);
+            //get all the corners
+            Vector3[] corners = HexCoords.GetCorners(current);
+            //calculate the distances to every corner
+            float[] distances = new float[6];
+            for (int i = 0; i < 6; i++)
+            {
+                distances[i] = (corners[i] - position).magnitude;
+            }
+            //find the corner with the minimum distance
+            float minDist = Mathf.Min(distances);
+            int cornerIdx = Array.IndexOf(distances, minDist);
+            return GetIntersectionFromCornerIdx(current, cornerIdx);
+        }
+
+        private static HexIntersection GetIntersectionFromCornerIdx(HexCoords hex, int cornerIdx)
+        {
+            HexCoords h2 = null;
+            HexCoords h3 = null;
+            switch (cornerIdx)
+            {
+                case 0:
+                    h2 = new HexCoords(hex.X - 1, hex.Z + 1);
+                    h3 = new HexCoords(hex.X, hex.Z + 1);
+                    break;
+                case 1:
+                    h2 = new HexCoords(hex.X, hex.Z + 1);
+                    h3 = new HexCoords(hex.X + 1, hex.Z);
+                    break;
+                case 2:
+                    h2 = new HexCoords(hex.X + 1, hex.Z);
+                    h3 = new HexCoords(hex.X + 1, hex.Z - 1);
+                    break;
+                case 3:
+                    h2 = new HexCoords(hex.X + 1, hex.Z - 1);
+                    h3 = new HexCoords(hex.X, hex.Z - 1);
+                    break;
+                case 4:
+                    h2 = new HexCoords(hex.X - 1, hex.Z);
+                    h3 = new HexCoords(hex.X, hex.Z - 1);
+                    break;
+                case 5:
+                    h2 = new HexCoords(hex.X - 1, hex.Z + 1);
+                    h3 = new HexCoords(hex.X - 1, hex.Z);
+                    break;
+            }
+            return new HexIntersection(hex, h2, h3);
+        }
+
     }
 }
