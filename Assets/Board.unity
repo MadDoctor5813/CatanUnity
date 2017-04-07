@@ -126,6 +126,8 @@ MonoBehaviour:
   - {fileID: 1983954248305806, guid: fcaf918d4997cce4590f31ef374c95db, type: 2}
   - {fileID: 1918715558087866, guid: c92dc7eadc90d614f9f7b143d42fae46, type: 2}
   - {fileID: 1894854919566236, guid: 383773b9ea944364ebfbb17e59a8a916, type: 2}
+  GhostSettlementPrefab: {fileID: 1248531831308690, guid: 6a61d6399c50d99438407a339eb160f5,
+    type: 2}
 --- !u!4 &505495011
 Transform:
   m_ObjectHideFlags: 0
