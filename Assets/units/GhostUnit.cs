@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using Assets.defs;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostUnit : MonoBehaviour
 {
 
+    public UnitTypes Type;
     public GameObject RealUnitPrefab;
 
 
