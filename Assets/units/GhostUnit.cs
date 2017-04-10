@@ -20,10 +20,10 @@ public class GhostUnit : MonoBehaviour
 		
     }
 
-    public void Place()
+    public GameObject Place()
     {
-        Instantiate(RealUnitPrefab, transform.position, transform.rotation, transform.parent);
         Destroy(gameObject);
+        return Instantiate(RealUnitPrefab, transform.position, transform.rotation, transform.parent);
     }
 
 }
