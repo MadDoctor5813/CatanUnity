@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     private System.Random random;
 
     private Dictionary<HexCoords, Tile> tileMap;
+    private Dictionary<HexIntersection, Unit> units;
 
     private BoxCollider boardCollider;
 
@@ -20,6 +21,7 @@ public class Board : MonoBehaviour
     {
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
+        units = new Dictionary<HexIntersection, Unit>();
         prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
         tilePrefabs = prefabContainer.GetWithPrefix("tile");
         boardCollider = GetComponent<BoxCollider>();
@@ -30,6 +32,11 @@ public class Board : MonoBehaviour
     {
 
 	}
+
+    public void AddUnit(HexIntersection intersection, Unit unit)
+    {
+        units.Add(intersection, unit);
+    }
 
     private void GenerateMap()
     {
