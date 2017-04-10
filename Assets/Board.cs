@@ -7,10 +7,8 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
 
-    public List<GameObject> TilePrefabs;
-
-    public GameObject GhostSettlementPrefab;
-    private GameObject ghostSettlement;
+    PrefabContainer prefabContainer;
+    private List<GameObject> tilePrefabs;
 
     private System.Random random;
 
@@ -18,44 +16,26 @@ public class Board : MonoBehaviour
 
     private BoxCollider boardCollider;
 
-    HexIntersection lastIntersection = null;
-
 	void Start ()
     {
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
+        prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
+        tilePrefabs = prefabContainer.GetWithPrefix("tile");
         boardCollider = GetComponent<BoxCollider>();
-        ghostSettlement = Instantiate(GhostSettlementPrefab, transform);
         GenerateMap();
 	}
 	
 	void Update ()
     {
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(mouseRay, out hit))
-        {
-            HexIntersection current = HexIntersection.GetNearestIntersection(hit.point);
-            if (ghostSettlement != null)
-            {
-                if (current != lastIntersection)
-                {
-                    ghostSettlement.transform.position = HexIntersection.ToLocalCoords(current);
-                }
-                if (Input.GetMouseButtonDown(0))
-                {
-                    ghostSettlement.GetComponent<GhostUnit>().Place();
-                }
-            }
-            lastIntersection = current;
-        }
+
 	}
 
     private void GenerateMap()
     {
         //generate the list of tiles
         List<GameObject> tileList = new List<GameObject>();
-        foreach (GameObject prefab in TilePrefabs)
+        foreach (GameObject prefab in tilePrefabs)
         {
             TileTypes type = prefab.GetComponent<Tile>().Type;
             int tileCount = TileInfo.TileCounts[type];
