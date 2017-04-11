@@ -60,6 +60,16 @@ namespace Assets.util
             }
         }
 
+        public static HexCoords operator+ (HexCoords h1, HexCoords h2)
+        {
+            return new HexCoords(h1.X + h2.X, h1.Z + h2.Z);
+        }
+
+        public static HexCoords operator- (HexCoords h1, HexCoords h2)
+        {
+            return new HexCoords(h1.X - h2.X, h1.Z - h2.Z);
+        }
+
         public static Vector3 ToLocalCoords(HexCoords hexCoords)
         {
             Vector2 localCoords = (hexCoords.X * XBasisHex) + (hexCoords.Z * ZBasisHex);
