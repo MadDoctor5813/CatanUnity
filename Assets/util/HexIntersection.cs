@@ -9,14 +9,40 @@ namespace Assets.util
     public class HexIntersection
     {
 
-        public HexCoords[] Neighbors { get; set; }
+        public HexCoords[] Hexes { get; set; }
 
         public HexIntersection(HexCoords h1, HexCoords h2, HexCoords h3)
         {
-            Neighbors = new HexCoords[3];
-            Neighbors[0] = h1;
-            Neighbors[1] = h2;
-            Neighbors[2] = h3;
+            Hexes = new HexCoords[3];
+            Hexes[0] = h1;
+            Hexes[1] = h2;
+            Hexes[2] = h3;
+            Array.Sort(Hexes, (HexCoords a, HexCoords b) =>
+            {
+                if (a.X < b.X)
+                {
+                    return -1;
+                }
+                else if (a.X > b.X)
+                {
+                    return 1;
+                }
+                else
+                {
+                    if (a.Z < b.Z)
+                    {
+                        return -1;
+                    }
+                    else if (a.Z > b.Z)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            });
         }
 
         public static Vector3 ToLocalCoords(HexIntersection intersection)
@@ -24,7 +50,7 @@ namespace Assets.util
             Vector3 coords = new Vector3();
             for (int i = 0; i < 3; i++)
             {
-                coords += HexCoords.ToLocalCoords(intersection.Neighbors[i]);
+                coords += HexCoords.ToLocalCoords(intersection.Hexes[i]);
             }
             coords /= 3;
             coords.y = 0.1f;
