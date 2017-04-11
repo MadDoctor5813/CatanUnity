@@ -120,6 +120,12 @@ namespace Assets.util
             return new HexCoords(rX, rZ);
         }
 
+        public static int HexDistance(HexCoords h1, HexCoords h2)
+        {
+            //return the greatest difference between each coordinate
+            return Math.Max(Math.Max(Math.Abs(h1.X - h2.X), Math.Abs(h1.Y - h2.Y)), Math.Abs(h1.Z - h2.Z));
+        }
+
         public override string ToString()
         {
             return string.Format("HexCoords: X: {0} Y: {1} Z: {2}", X, Y, Z);
