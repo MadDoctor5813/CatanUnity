@@ -109,5 +109,19 @@ namespace Assets.util
             return new HexIntersection(hex, h2, h3);
         }
 
+        public static HexIntersection[] GetNeighbors(HexIntersection intersection)
+        {
+            HexIntersection[] neighbors = new HexIntersection[3];
+            HexCoords h1 = intersection.Hexes[0];
+            HexCoords h2 = intersection.Hexes[1];
+            HexCoords h3 = intersection.Hexes[2];
+            HexCoords newCoords1 = h1 + (h2 - h1) + (h3 - h1);
+            neighbors[0] = new HexIntersection(newCoords1, h2, h3);
+            HexCoords newCoords2 = h2 + (h1 - h2) + (h3 - h2);
+            neighbors[1] = new HexIntersection(h1, newCoords2, h3);
+            HexCoords newCoords3 = h3 + (h1 - h3) + (h2 - h3);
+            neighbors[2] = new HexIntersection(h1, h2, newCoords3);
+            return neighbors;
+        }
     }
 }
