@@ -123,5 +123,38 @@ namespace Assets.util
             neighbors[2] = new HexCorner(h1, h2, newCoords3);
             return neighbors;
         }
+
+        public override bool Equals(object b)
+        {
+            if (b == null)
+            {
+                return false;
+            }
+            if (!(b is HexCorner))
+            {
+                return false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                HexCoords bCoords = (b as HexCorner).Hexes[i];
+                if (Hexes[i].X != bCoords.X || Hexes[i].Y != bCoords.Y || Hexes[i].Z != bCoords.Z)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                code ^= Hexes[i].X;
+                code ^= Hexes[i].Y;
+                code ^= Hexes[i].Z;
+            }
+            return code.GetHashCode();
+        }
     }
 }
