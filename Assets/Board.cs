@@ -15,22 +15,32 @@ public class Board : MonoBehaviour
     private Dictionary<HexCoords, Tile> tileMap;
     private Dictionary<HexCorner, Unit> units;
 
+    private HexCornerGraph cornerGraph;
+
     private BoxCollider boardCollider;
 
 	void Start ()
     {
+        prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
+        tilePrefabs = prefabContainer.GetWithPrefix("tile");
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
         units = new Dictionary<HexCorner, Unit>();
-        prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
-        tilePrefabs = prefabContainer.GetWithPrefix("tile");
+        cornerGraph = new HexCornerGraph();
         boardCollider = GetComponent<BoxCollider>();
         GenerateMap();
 	}
 	
 	void Update ()
     {
-
+        foreach (var corner in cornerGraph.Neighbors.Keys)
+        {
+            HexCorner[] neighbors = cornerGraph.Neighbors[corner];
+            for (int i = 0; i < neighbors.Length; i++)
+            {
+                Debug.DrawLine(HexCorner.ToLocalCoords(neighbors[i]), HexCorner.ToLocalCoords(corner), Color.red);
+            }
+        }
 	}
 
     public void AddUnit(HexCorner intersection, Unit unit)
