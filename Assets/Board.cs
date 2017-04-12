@@ -70,6 +70,19 @@ public class Board : MonoBehaviour
         GenerateCollider();
     }
 
+    public bool IsValidSettlement(HexCorner corner)
+    {
+        var unitLocations = units.Keys;
+        foreach (var location in unitLocations)
+        {
+            if (units[location].Type == UnitTypes.Settlement && cornerGraph.CornerDistance(location, corner) < 2)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void GenerateMapColumn(int x, int startZ, int count, List<GameObject> tileList)
     {
         for (int i = 0; i < count; i++)

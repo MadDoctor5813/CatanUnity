@@ -62,9 +62,12 @@ public class Player : MonoBehaviour
             lastIntersection = current;
             if (Input.GetMouseButtonDown(0) == true)
             {
-                GameObject unit = ghostUnit.Place();
-                Board.AddUnit(current, unit.GetComponent<Unit>());
-                stateMachine.ChangeState(PlayerStates.Idle);
+                if (Board.IsValidSettlement(current))
+                {
+                    GameObject unit = ghostUnit.Place();             
+                    Board.AddUnit(current, unit.GetComponent<Unit>());
+                    stateMachine.ChangeState(PlayerStates.Idle);
+                }
             }
         }
     }
