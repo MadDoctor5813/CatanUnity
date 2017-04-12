@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     private Dictionary<UnitTypes, GameObject> ghostUnitPrefabs;
 
     private GhostUnit ghostUnit;
-    private HexIntersection lastIntersection = null;
+    private HexCorner lastIntersection = null;
 
 	void Start ()
 	{
@@ -54,10 +54,10 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(mouseRay, out hit))
         {
-            HexIntersection current = HexIntersection.GetNearestIntersection(hit.point);
+            HexCorner current = HexCorner.GetNearestCorner(hit.point);
             if (current != lastIntersection)
             {
-                ghostUnit.transform.position = HexIntersection.ToLocalCoords(current);
+                ghostUnit.transform.position = HexCorner.ToLocalCoords(current);
             }
             lastIntersection = current;
             if (Input.GetMouseButtonDown(0) == true)

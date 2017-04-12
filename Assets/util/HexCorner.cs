@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace Assets.util
 {
-    public class HexIntersection
+    public class HexCorner
     {
 
         public HexCoords[] Hexes { get; set; }
 
-        public HexIntersection(HexCoords h1, HexCoords h2, HexCoords h3)
+        public HexCorner(HexCoords h1, HexCoords h2, HexCoords h3)
         {
             Hexes = new HexCoords[3];
             Hexes[0] = h1;
@@ -45,19 +45,19 @@ namespace Assets.util
             });
         }
 
-        public static Vector3 ToLocalCoords(HexIntersection intersection)
+        public static Vector3 ToLocalCoords(HexCorner corner)
         {
             Vector3 coords = new Vector3();
             for (int i = 0; i < 3; i++)
             {
-                coords += HexCoords.ToLocalCoords(intersection.Hexes[i]);
+                coords += HexCoords.ToLocalCoords(corner.Hexes[i]);
             }
             coords /= 3;
             coords.y = 0.1f;
             return coords;
         }
 
-        public static HexIntersection GetNearestIntersection(Vector3 position)
+        public static HexCorner GetNearestCorner(Vector3 position)
         {
             //get the current hex the position is in
             HexCoords current = HexCoords.FromLocalCoords(position);
@@ -72,10 +72,10 @@ namespace Assets.util
             //find the corner with the minimum distance
             float minDist = Mathf.Min(distances);
             int cornerIdx = Array.IndexOf(distances, minDist);
-            return GetIntersectionFromCornerIdx(current, cornerIdx);
+            return GetCornerFromCornerIdx(current, cornerIdx);
         }
 
-        private static HexIntersection GetIntersectionFromCornerIdx(HexCoords hex, int cornerIdx)
+        private static HexCorner GetCornerFromCornerIdx(HexCoords hex, int cornerIdx)
         {
             HexCoords h2 = null;
             HexCoords h3 = null;
@@ -106,21 +106,21 @@ namespace Assets.util
                     h3 = new HexCoords(hex.X - 1, hex.Z);
                     break;
             }
-            return new HexIntersection(hex, h2, h3);
+            return new HexCorner(hex, h2, h3);
         }
 
-        public static HexIntersection[] GetNeighbors(HexIntersection intersection)
+        public static HexCorner[] GetNeighbors(HexCorner corner)
         {
-            HexIntersection[] neighbors = new HexIntersection[3];
-            HexCoords h1 = intersection.Hexes[0];
-            HexCoords h2 = intersection.Hexes[1];
-            HexCoords h3 = intersection.Hexes[2];
+            HexCorner[] neighbors = new HexCorner[3];
+            HexCoords h1 = corner.Hexes[0];
+            HexCoords h2 = corner.Hexes[1];
+            HexCoords h3 = corner.Hexes[2];
             HexCoords newCoords1 = h1 + (h2 - h1) + (h3 - h1);
-            neighbors[0] = new HexIntersection(newCoords1, h2, h3);
+            neighbors[0] = new HexCorner(newCoords1, h2, h3);
             HexCoords newCoords2 = h2 + (h1 - h2) + (h3 - h2);
-            neighbors[1] = new HexIntersection(h1, newCoords2, h3);
+            neighbors[1] = new HexCorner(h1, newCoords2, h3);
             HexCoords newCoords3 = h3 + (h1 - h3) + (h2 - h3);
-            neighbors[2] = new HexIntersection(h1, h2, newCoords3);
+            neighbors[2] = new HexCorner(h1, h2, newCoords3);
             return neighbors;
         }
     }
