@@ -45,6 +45,11 @@ public class Board : MonoBehaviour
 
     public void AddUnit(HexCorner intersection, Unit unit)
     {
+        //if something's already there, delete it
+        if (units.ContainsKey(intersection))
+        {
+            units.Remove(intersection);
+        }
         units.Add(intersection, unit);
     }
 
