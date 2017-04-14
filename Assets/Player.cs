@@ -56,6 +56,11 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(mouseRay, out hit))
         {
             HexCorner current = HexCorner.GetNearestCorner(hit.point);
+            if (lastIntersection != null)
+            {
+                Board.SetUnitVisible(lastIntersection, true);
+            }
+            Board.SetUnitVisible(current, false);
             if (current != lastIntersection)
             {
                 if (ghostUnit != null)

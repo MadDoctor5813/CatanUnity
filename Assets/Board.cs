@@ -91,6 +91,15 @@ public class Board : MonoBehaviour
         }
         return false;
     }
+
+    public void SetUnitVisible(HexCorner corner, bool visible)
+    {
+        if (units.ContainsKey(corner))
+        {
+            units[corner].GetComponent<Renderer>().enabled = visible;
+        }
+    }
+
     private void GenerateMapColumn(int x, int startZ, int count, List<GameObject> tileList)
     {
         for (int i = 0; i < count; i++)
