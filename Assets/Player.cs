@@ -8,7 +8,8 @@ using UnityEngine;
 public enum PlayerStates
 {
     Idle,
-    PlacingSettlement
+    PlacingSettlement,
+    PlacingCity,
 }
 
 public class Player : MonoBehaviour
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
 
     private Dictionary<UnitTypes, GameObject> ghostUnitPrefabs;
 
+    private bool intersectionUpdated = false;
     private GhostUnit ghostUnit;
     private HexCorner lastIntersection = null;
 
@@ -41,6 +43,28 @@ public class Player : MonoBehaviour
         {
             stateMachine.ChangeState(PlayerStates.PlacingSettlement);
         }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            stateMachine.ChangeState(PlayerStates.PlacingCity);
+        }
+    }
+
+    private void UpdateLastIntersection()
+    {
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(mouseRay, out hit))
+        {
+            HexCorner current = HexCorner.GetNearestCorner(hit.point);
+            if (current != lastIntersection)
+            {
+                if (ghostUnit != null)
+                {
+                    ghostUnit.transform.position = HexCorner.ToLocalCoords(current);
+                }
+            }
+            lastIntersection = current;
+        }
     }
 
     public void PlacingSettlement_Enter()
@@ -50,24 +74,33 @@ public class Player : MonoBehaviour
 
     public void PlacingSettlement_Update()
     {
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(mouseRay, out hit))
+        UpdateLastIntersection();
+        if (Input.GetMouseButtonDown(0) == true)
         {
-            HexCorner current = HexCorner.GetNearestCorner(hit.point);
-            if (current != lastIntersection)
+            if (Board.IsValidSettlement(lastIntersection))
             {
-                ghostUnit.transform.position = HexCorner.ToLocalCoords(current);
+                GameObject unit = ghostUnit.Place();             
+                Board.AddUnit(lastIntersection, unit.GetComponent<Unit>());
+                stateMachine.ChangeState(PlayerStates.Idle);
             }
-            lastIntersection = current;
-            if (Input.GetMouseButtonDown(0) == true)
+        }
+    }
+
+    public void PlacingCity_Enter()
+    {
+        ghostUnit = Instantiate(ghostUnitPrefabs[UnitTypes.City], Board.transform).GetComponent<GhostUnit>();
+    }
+
+    public void PlacingCity_Update()
+    {
+        UpdateLastIntersection();
+        if (Input.GetMouseButtonDown(0) == true)
+        {
+            if (Board.IsValidCity(lastIntersection))
             {
-                if (Board.IsValidSettlement(current))
-                {
-                    GameObject unit = ghostUnit.Place();             
-                    Board.AddUnit(current, unit.GetComponent<Unit>());
-                    stateMachine.ChangeState(PlayerStates.Idle);
-                }
+                GameObject unit = ghostUnit.Place();
+                Board.AddUnit(lastIntersection, unit.GetComponent<Unit>());
+                stateMachine.ChangeState(PlayerStates.Idle);
             }
         }
     }

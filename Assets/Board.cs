@@ -83,6 +83,14 @@ public class Board : MonoBehaviour
         return true;
     }
 
+    public bool IsValidCity(HexCorner corner)
+    {
+        if (units.ContainsKey(corner) && units[corner].Type == UnitTypes.Settlement)
+        {
+            return true;
+        }
+        return false;
+    }
     private void GenerateMapColumn(int x, int startZ, int count, List<GameObject> tileList)
     {
         for (int i = 0; i < count; i++)
