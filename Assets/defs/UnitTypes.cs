@@ -7,11 +7,7 @@ namespace Assets.defs
 {
     public enum UnitTypes
     {
-
         Settlement,
         City,
-        Road,
-        Robber
-
     }
 }
