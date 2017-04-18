@@ -19,10 +19,18 @@ public class Board : MonoBehaviour
 
     private BoxCollider boardCollider;
 
+    private Dictionary<UnitTypes, GameObject> unitPrefabs;
+    private Unit ghostUnit;
+
 	void Start ()
     {
         prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
         tilePrefabs = prefabContainer.GetWithPrefix("tile");
+        unitPrefabs = new Dictionary<UnitTypes, GameObject>();
+        foreach (var unit in prefabContainer.GetWithPrefix("unit"))
+        {
+            unitPrefabs.Add(unit.GetComponent<Unit>().Type, unit);
+        }
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
         units = new Dictionary<HexCorner, Unit>();
@@ -42,6 +50,48 @@ public class Board : MonoBehaviour
             }
         }
 	}
+
+    public void SetGhostUnit(HexCorner newCorner, UnitTypes type)
+    {
+        //if the unit is null, create it
+        if (ghostUnit == null)
+        {
+            ghostUnit = Instantiate(unitPrefabs[type], transform).GetComponent<Unit>();
+        }
+        //if the corner is the same as the temp's corner, nothing has changed
+        if (newCorner.Equals(ghostUnit.Location))
+        {
+            return;
+        }
+        else
+        {
+            //set the unit at this corner invisible, if it's there
+            if (units.ContainsKey(newCorner))
+            {
+                units[newCorner].GetComponent<Renderer>().enabled = false;
+            }
+            //set the unit at the old corner visible, if its there
+            if (ghostUnit.Location != null && units.ContainsKey(ghostUnit.Location))
+            {
+                units[ghostUnit.Location].GetComponent<Renderer>().enabled = true;
+            }
+            //move the ghost unit to the new location
+            ghostUnit.Location = newCorner;
+            ghostUnit.transform.position = transform.TransformPoint(HexCorner.ToLocalCoords(newCorner));
+        }
+    }
+
+    public bool PlaceGhostUnit()
+    {
+        bool valid = (ghostUnit.Type == UnitTypes.Settlement && IsValidSettlement(ghostUnit.Location)) ||
+            (ghostUnit.Type == UnitTypes.City && IsValidCity(ghostUnit.Location));
+        if (valid)
+        {
+            AddUnit(ghostUnit.Location, ghostUnit);
+            ghostUnit = null;
+        }
+        return valid;
+    }
 
     public void AddUnit(HexCorner intersection, Unit unit)
     {
