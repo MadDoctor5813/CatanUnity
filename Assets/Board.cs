@@ -65,26 +65,28 @@ public class Board : MonoBehaviour
         }
         else
         {
-            //set the unit at this corner invisible, if it's there
-            if (units.ContainsKey(newCorner))
+            if (IsValidUnitPlacement(newCorner, type))
             {
-                units[newCorner].GetComponent<Renderer>().enabled = false;
+                //set the unit at this corner invisible, if it's there
+                if (units.ContainsKey(newCorner))
+                {
+                    units[newCorner].GetComponent<Renderer>().enabled = false;
+                }
+                //set the unit at the old corner visible, if its there
+                if (ghostUnit.Location != null && units.ContainsKey(ghostUnit.Location))
+                {
+                    units[ghostUnit.Location].GetComponent<Renderer>().enabled = true;
+                }
+                //move the ghost unit to the new location
+                ghostUnit.Location = newCorner;
+                ghostUnit.transform.position = transform.TransformPoint(HexCorner.ToLocalCoords(newCorner));
             }
-            //set the unit at the old corner visible, if its there
-            if (ghostUnit.Location != null && units.ContainsKey(ghostUnit.Location))
-            {
-                units[ghostUnit.Location].GetComponent<Renderer>().enabled = true;
-            }
-            //move the ghost unit to the new location
-            ghostUnit.Location = newCorner;
-            ghostUnit.transform.position = transform.TransformPoint(HexCorner.ToLocalCoords(newCorner));
         }
     }
 
     public bool PlaceGhostUnit()
     {
-        bool valid = (ghostUnit.Type == UnitTypes.Settlement && IsValidSettlement(ghostUnit.Location)) ||
-            (ghostUnit.Type == UnitTypes.City && IsValidCity(ghostUnit.Location));
+        bool valid = IsValidUnitPlacement(ghostUnit.Location, ghostUnit.Type);
         if (valid)
         {
             AddUnit(ghostUnit.Location, ghostUnit);
@@ -123,6 +125,11 @@ public class Board : MonoBehaviour
         GenerateMapColumn(1, -2, 4, tileList);
         GenerateMapColumn(2, -2, 3, tileList);
         GenerateCollider();
+    }
+
+    public bool IsValidUnitPlacement(HexCorner corner, UnitTypes type)
+    {
+        return (type == UnitTypes.Settlement && IsValidSettlement(corner)) || (type == UnitTypes.City && IsValidCity(corner));
     }
 
     public bool IsValidSettlement(HexCorner corner)
