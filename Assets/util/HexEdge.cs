@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.util
 {
-    class HexEdge
+    public class HexEdge
     {
         HexCorner Start { get; set; }
         HexCorner End { get; set; }
