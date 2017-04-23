@@ -9,7 +9,7 @@ public class PrefabContainer : MonoBehaviour
 
     private Dictionary<string, GameObject> prefabDict;
 
-	void Start ()
+	void Awake ()
 	{
         prefabDict = new Dictionary<string, GameObject>();
 		foreach (GameObject go in Prefabs)
