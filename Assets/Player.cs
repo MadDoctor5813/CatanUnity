@@ -10,6 +10,7 @@ public enum PlayerStates
 {
     Idle,
     PlacingUnit,
+    PlacingRoad,
 }
 
 public class Player : MonoBehaviour
@@ -40,6 +41,10 @@ public class Player : MonoBehaviour
             stateMachine.ChangeState(PlayerStates.PlacingUnit);
             placingUnitType = UnitTypes.City;
         }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            stateMachine.ChangeState(PlayerStates.PlacingRoad);
+        }
     }
 
     public void PlacingUnit_Update()
@@ -52,6 +57,23 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 if (Board.PlaceGhostUnit())
+                {
+                    stateMachine.ChangeState(PlayerStates.Idle);
+                }
+            }
+        }
+    }
+
+    public void PlacingRoad_Update()
+    {
+        Vector3? mouseHit = RaycastMouse();
+        if (mouseHit.HasValue)
+        {
+            HexEdge edge = HexEdge.GetNearestEdge(mouseHit.Value);
+            Board.SetGhostRoad(edge);
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (Board.PlaceGhostRoad())
                 {
                     stateMachine.ChangeState(PlayerStates.Idle);
                 }

@@ -14,6 +14,7 @@ public class Board : MonoBehaviour
 
     private Dictionary<HexCoords, Tile> tileMap;
     private Dictionary<HexCorner, Unit> units;
+    private Dictionary<HexEdge, Road> roads;
 
     private HexCornerGraph cornerGraph;
 
@@ -21,6 +22,9 @@ public class Board : MonoBehaviour
 
     private Dictionary<UnitTypes, GameObject> unitPrefabs;
     private Unit ghostUnit;
+
+    private GameObject roadPrefab;
+    private Road ghostRoad;
 
 	void Start ()
     {
@@ -31,24 +35,18 @@ public class Board : MonoBehaviour
         {
             unitPrefabs.Add(unit.GetComponent<Unit>().Type, unit);
         }
+        roadPrefab = prefabContainer.Get("road");
         random = new System.Random();
         tileMap = new Dictionary<HexCoords, Tile>();
         units = new Dictionary<HexCorner, Unit>();
+        roads = new Dictionary<HexEdge, Road>();
         cornerGraph = new HexCornerGraph();
         boardCollider = GetComponent<BoxCollider>();
         GenerateMap();
-	}
+    }
 	
 	void Update ()
     {
-        foreach (var corner in cornerGraph.Neighbors.Keys)
-        {
-            HexCorner[] neighbors = cornerGraph.Neighbors[corner];
-            for (int i = 0; i < neighbors.Length; i++)
-            {
-                Debug.DrawLine(HexCorner.ToLocalCoords(neighbors[i]), HexCorner.ToLocalCoords(corner), Color.red);
-            }
-        }
 	}
 
     public void SetGhostUnit(HexCorner newCorner, UnitTypes type)
@@ -105,6 +103,41 @@ public class Board : MonoBehaviour
         units.Add(intersection, unit);
     }
 
+    public void SetGhostRoad(HexEdge edge)
+    {
+        if (ghostRoad == null)
+        {
+            ghostRoad = Instantiate(roadPrefab, transform).GetComponent<Road>();
+        }
+        if (edge.Equals(ghostRoad.Edge))
+        {
+            return;
+        }
+        else
+        {
+            if (IsValidRoad(edge))
+            {
+                ghostRoad.transform.position = HexEdge.ToLocalCoords(edge);
+                ghostRoad.transform.rotation = HexEdge.GetRotation(edge);
+                ghostRoad.Edge = edge;
+            }
+        }
+    }
+
+    public bool PlaceGhostRoad()
+    {
+        if (IsValidRoad(ghostRoad.Edge))
+        {
+            roads.Add(ghostRoad.Edge, ghostRoad);
+            ghostRoad = null;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private void GenerateMap()
     {
         //generate the list of tiles
@@ -152,6 +185,11 @@ public class Board : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public bool IsValidRoad(HexEdge edge)
+    {
+        return !roads.ContainsKey(edge);
     }
 
     public void SetUnitVisible(HexCorner corner, bool visible)
