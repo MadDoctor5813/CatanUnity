@@ -27,7 +27,8 @@ namespace Assets.util
             if (obj is HexEdge)
             {
                 HexEdge other = obj as HexEdge;
-                return (other.Start.Equals(Start) && other.End.Equals(End));
+                return (other.Start.Equals(Start) && other.End.Equals(End)) ||
+                    (other.Start.Equals(End) && other.End.Equals(Start));
             }
             else
             {
