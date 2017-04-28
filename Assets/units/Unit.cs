@@ -9,10 +9,11 @@ public class Unit : MonoBehaviour
 
     public UnitTypes Type;
     public HexCorner Location;
+    public PlayerInfo.PlayerColor Color;
    
 	void Start ()
 	{
-		
+        GetComponent<Renderer>().material.color = PlayerInfo.GetPlayerColorRGB(Color);
 	}
 	
 	void Update () 

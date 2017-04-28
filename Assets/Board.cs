@@ -49,12 +49,13 @@ public class Board : MonoBehaviour
     {
 	}
 
-    public void SetGhostUnit(HexCorner newCorner, UnitTypes type)
+    public void SetGhostUnit(HexCorner newCorner, UnitTypes type, PlayerInfo.PlayerColor color)
     {
         //if the unit is null, create it
         if (ghostUnit == null)
         {
             ghostUnit = Instantiate(unitPrefabs[type], transform).GetComponent<Unit>();
+            ghostUnit.Color = color;
         }
         //if the corner is the same as the temp's corner, nothing has changed
         if (newCorner.Equals(ghostUnit.Location))
@@ -103,11 +104,12 @@ public class Board : MonoBehaviour
         units.Add(intersection, unit);
     }
 
-    public void SetGhostRoad(HexEdge edge)
+    public void SetGhostRoad(HexEdge edge, PlayerInfo.PlayerColor color)
     {
         if (ghostRoad == null)
         {
             ghostRoad = Instantiate(roadPrefab, transform).GetComponent<Road>();
+            ghostRoad.Color = color;
         }
         if (edge.Equals(ghostRoad.Edge))
         {

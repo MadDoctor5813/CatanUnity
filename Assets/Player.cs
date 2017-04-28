@@ -16,6 +16,7 @@ public enum PlayerStates
 public class Player : MonoBehaviour
 {
     public Board Board;
+    public PlayerInfo.PlayerColor Color;
 
     private PrefabContainer prefabContainer;
 
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
         if (mouseHit.HasValue)
         {
             HexCorner corner = HexCorner.GetNearestCorner(mouseHit.Value);
-            Board.SetGhostUnit(corner, placingUnitType);
+            Board.SetGhostUnit(corner, placingUnitType, Color);
             if (Input.GetMouseButtonDown(0))
             {
                 if (Board.PlaceGhostUnit())
@@ -70,7 +71,7 @@ public class Player : MonoBehaviour
         if (mouseHit.HasValue)
         {
             HexEdge edge = HexEdge.GetNearestEdge(mouseHit.Value);
-            Board.SetGhostRoad(edge);
+            Board.SetGhostRoad(edge, Color);
             if (Input.GetMouseButtonDown(0))
             {
                 if (Board.PlaceGhostRoad())
