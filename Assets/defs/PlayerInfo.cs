@@ -9,14 +9,6 @@ namespace Assets.defs
     public class PlayerInfo
     {
 
-        public enum PlayerColor
-        {
-            Red,
-            Blue,
-            White,
-            Orange
-        }
-
         private static Dictionary<PlayerColor, Color> rgbValues = new Dictionary<PlayerColor, Color>()
         {
             { PlayerColor.Red, new Color(0.91765f, 0.14902f, 0.10980f) },

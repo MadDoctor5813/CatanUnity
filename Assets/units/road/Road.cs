@@ -8,7 +8,7 @@ public class Road : MonoBehaviour
 {
 
     public HexEdge Edge;
-    public PlayerInfo.PlayerColor Color;
+    public PlayerColor Color;
 
 	void Start ()
 	{

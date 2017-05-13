@@ -16,7 +16,7 @@ public enum PlayerStates
 public class Player : MonoBehaviour
 {
     public Board Board;
-    public PlayerInfo.PlayerColor Color;
+    public PlayerColor Color;
 
     private PrefabContainer prefabContainer;
 

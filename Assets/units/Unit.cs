@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
 
     public UnitTypes Type;
     public HexCorner Location;
-    public PlayerInfo.PlayerColor Color;
+    public PlayerColor Color;
    
 	void Start ()
 	{

@@ -49,7 +49,7 @@ public class Board : MonoBehaviour
     {
 	}
 
-    public void SetGhostUnit(HexCorner newCorner, UnitTypes type, PlayerInfo.PlayerColor color)
+    public void SetGhostUnit(HexCorner newCorner, UnitTypes type, PlayerColor color)
     {
         //if the unit is null, create it
         if (ghostUnit == null)
@@ -104,7 +104,7 @@ public class Board : MonoBehaviour
         units.Add(intersection, unit);
     }
 
-    public void SetGhostRoad(HexEdge edge, PlayerInfo.PlayerColor color)
+    public void SetGhostRoad(HexEdge edge, PlayerColor color)
     {
         if (ghostRoad == null)
         {
