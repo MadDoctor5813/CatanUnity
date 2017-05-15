@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
 {
     public Board Board;
     public PlayerColor Color;
+    public GameCoordinator Coordinator;
+
+    private bool isMyTurn = false;
 
     private PrefabContainer prefabContainer;
 
@@ -29,22 +32,36 @@ public class Player : MonoBehaviour
         prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
         stateMachine = StateMachine<PlayerStates>.Initialize(this, PlayerStates.Idle);
 	}
+
+    public void StartTurn()
+    {
+        Debug.Log(string.Format("Starting turn for {0}", Color.ToString()));
+        isMyTurn = true;
+    }
+
+    public void EndTurn()
+    {
+        isMyTurn = false;
+    }
 	
 	public void Idle_Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (isMyTurn)
         {
-            stateMachine.ChangeState(PlayerStates.PlacingUnit);
-            placingUnitType = UnitTypes.Settlement;
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            stateMachine.ChangeState(PlayerStates.PlacingUnit);
-            placingUnitType = UnitTypes.City;
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            stateMachine.ChangeState(PlayerStates.PlacingRoad);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                stateMachine.ChangeState(PlayerStates.PlacingUnit);
+                placingUnitType = UnitTypes.Settlement;
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                stateMachine.ChangeState(PlayerStates.PlacingUnit);
+                placingUnitType = UnitTypes.City;
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                stateMachine.ChangeState(PlayerStates.PlacingRoad);
+            }
         }
     }
 
@@ -65,6 +82,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void PlacingUnit_Exit()
+    {
+        Coordinator.NextTurn();
+    }
+
     public void PlacingRoad_Update()
     {
         Vector3? mouseHit = RaycastMouse();
@@ -80,6 +102,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void PlacingRoad_Exit()
+    {
+        Coordinator.NextTurn();
     }
 
 
