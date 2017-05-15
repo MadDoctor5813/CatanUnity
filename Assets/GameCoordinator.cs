@@ -10,7 +10,7 @@ public class GameCoordinator : MonoBehaviour
     public Board Board;
     public GameObject PlayerPrefab;
 
-    private Dictionary<PlayerColor, Player> players;
+    private List<Player> players;
 
 	void Start ()
 	{
@@ -19,12 +19,12 @@ public class GameCoordinator : MonoBehaviour
 
     private void InitializePlayers()
     {
-        players = new Dictionary<PlayerColor, Player>
+        players = new List<Player>
         {
-            { PlayerColor.Blue, InstantiatePlayer(PlayerColor.Blue) },
-            { PlayerColor.Orange, InstantiatePlayer(PlayerColor.Orange) },
-            { PlayerColor.Red, InstantiatePlayer(PlayerColor.Red) },
-            { PlayerColor.White, InstantiatePlayer(PlayerColor.White) }
+            { InstantiatePlayer(PlayerColor.Blue) },
+            { InstantiatePlayer(PlayerColor.Orange) },
+            { InstantiatePlayer(PlayerColor.Red) },
+            { InstantiatePlayer(PlayerColor.White) }
         };
     }
 
