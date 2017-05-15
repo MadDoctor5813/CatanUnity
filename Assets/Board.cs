@@ -85,13 +85,9 @@ public class Board : MonoBehaviour
 
     public bool PlaceGhostUnit()
     {
-        bool valid = IsValidUnitPlacement(ghostUnit.Location, ghostUnit.Type);
-        if (valid)
-        {
-            AddUnit(ghostUnit.Location, ghostUnit);
-            ghostUnit = null;
-        }
-        return valid;
+        AddUnit(ghostUnit.Location, ghostUnit);
+        ghostUnit = null;
+        return true;
     }
 
     public void AddUnit(HexCorner intersection, Unit unit)
