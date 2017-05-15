@@ -64,7 +64,7 @@ public class Board : MonoBehaviour
         }
         else
         {
-            if (IsValidUnitPlacement(newCorner, type))
+            if (IsValidUnitPlacement(newCorner, type, color))
             {
                 //set the unit at this corner invisible, if it's there
                 if (units.ContainsKey(newCorner))
@@ -158,9 +158,9 @@ public class Board : MonoBehaviour
         GenerateCollider();
     }
 
-    public bool IsValidUnitPlacement(HexCorner corner, UnitTypes type)
+    public bool IsValidUnitPlacement(HexCorner corner, UnitTypes type, PlayerColor color)
     {
-        return (type == UnitTypes.Settlement && IsValidSettlement(corner)) || (type == UnitTypes.City && IsValidCity(corner));
+        return (type == UnitTypes.Settlement && IsValidSettlement(corner)) || (type == UnitTypes.City && IsValidCity(corner, color));
     }
 
     public bool IsValidSettlement(HexCorner corner)
@@ -168,7 +168,7 @@ public class Board : MonoBehaviour
         var unitLocations = units.Keys;
         foreach (var location in unitLocations)
         {
-            if (units[location].Type == UnitTypes.Settlement && cornerGraph.CornerDistance(location, corner) < 2)
+            if ((units[location].Type == UnitTypes.Settlement || units[location].Type == UnitTypes.City) && cornerGraph.CornerDistance(location, corner) < 2)
             {
                 return false;
             }
@@ -176,9 +176,9 @@ public class Board : MonoBehaviour
         return true;
     }
 
-    public bool IsValidCity(HexCorner corner)
+    public bool IsValidCity(HexCorner corner, PlayerColor color)
     {
-        if (units.ContainsKey(corner) && units[corner].Type == UnitTypes.Settlement)
+        if (units.ContainsKey(corner) && units[corner].Type == UnitTypes.Settlement && units[corner].Color == color)
         {
             return true;
         }
