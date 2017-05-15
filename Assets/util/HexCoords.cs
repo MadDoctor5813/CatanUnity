@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Assets.util
 {
     [System.Serializable]
-    public class HexCoords
+    public class HexCoords : HexLocation
     {
 
         private static readonly Vector2 XBasisHex = new Vector2(1.5f * HexInfo.HexRadius, HexInfo.InnerHexRadius);
@@ -70,9 +70,9 @@ namespace Assets.util
             return new HexCoords(h1.X - h2.X, h1.Z - h2.Z);
         }
 
-        public static Vector3 ToLocalCoords(HexCoords hexCoords)
+        public override Vector3 ToLocalCoords()
         {
-            Vector2 localCoords = (hexCoords.X * XBasisHex) + (hexCoords.Z * ZBasisHex);
+            Vector2 localCoords = (X * XBasisHex) + (Z * ZBasisHex);
             return new Vector3(localCoords.x, 0, localCoords.y);
         }
 
@@ -85,7 +85,7 @@ namespace Assets.util
         
         public static Vector3[] GetCorners(HexCoords hexCoords)
         {
-            Vector3 hexPos = ToLocalCoords(hexCoords);
+            Vector3 hexPos = hexCoords.ToLocalCoords();
             Vector3[] corners = new Vector3[6];
             for (int i = 0; i < 6; i++)
             {

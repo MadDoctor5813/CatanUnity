@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.util
 {
-    public class HexCorner
+    public class HexCorner : HexLocation
     {
 
         public HexCoords[] Hexes { get; set; }
@@ -45,12 +45,12 @@ namespace Assets.util
             });
         }
 
-        public static Vector3 ToLocalCoords(HexCorner corner)
+        public override Vector3 ToLocalCoords()
         {
             Vector3 coords = new Vector3();
             for (int i = 0; i < 3; i++)
             {
-                coords += HexCoords.ToLocalCoords(corner.Hexes[i]);
+                coords += Hexes[i].ToLocalCoords();
             }
             coords /= 3;
             coords.y = 0.1f;

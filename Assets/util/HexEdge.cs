@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.util
 {
-    public class HexEdge
+    public class HexEdge : HexLocation
     {
         HexCorner Start { get; set; }
         HexCorner End { get; set; }
@@ -17,9 +17,9 @@ namespace Assets.util
             End = end;
         }
 
-        public static Vector3 ToLocalCoords(HexEdge edge)
+        public override Vector3 ToLocalCoords()
         {
-            return (HexCorner.ToLocalCoords(edge.Start) + HexCorner.ToLocalCoords(edge.End)) / 2;
+            return (Start.ToLocalCoords() + End.ToLocalCoords()) / 2;
         }
 
         public override bool Equals(object obj)
@@ -36,10 +36,10 @@ namespace Assets.util
             }
         }
 
-        public static Quaternion GetRotation(HexEdge edge)
+        public override Quaternion ToLocalRot()
         {
-            Vector3 start = HexCorner.ToLocalCoords(edge.Start);
-            Vector3 end = HexCorner.ToLocalCoords(edge.End);
+            Vector3 start = Start.ToLocalCoords();
+            Vector3 end = End.ToLocalCoords();
             Vector3 diff = start - end;
             float angle = Mathf.Rad2Deg * Mathf.Atan2(diff.z, diff.x);
             //move the angle returned from atan2 into a 0-360 range
@@ -61,7 +61,7 @@ namespace Assets.util
             float[] distances = new float[neighbors.Length];
             for (int i = 0; i < neighbors.Length; i++)
             {
-                distances[i] = Vector3.Distance(coords, HexCorner.ToLocalCoords(neighbors[i]));
+                distances[i] = Vector3.Distance(coords, neighbors[i].ToLocalCoords());
             }
             return new HexEdge(corner, neighbors[Array.IndexOf(distances, Mathf.Min(distances))]);
         }

@@ -78,7 +78,7 @@ public class Board : MonoBehaviour
                 }
                 //move the ghost unit to the new location
                 ghostUnit.Location = newCorner;
-                ghostUnit.transform.position = transform.TransformPoint(HexCorner.ToLocalCoords(newCorner));
+                ghostUnit.transform.position = transform.TransformPoint(newCorner.ToLocalCoords());
             }
         }
     }
@@ -115,8 +115,8 @@ public class Board : MonoBehaviour
         {
             if (IsValidRoad(edge))
             {
-                ghostRoad.transform.position = HexEdge.ToLocalCoords(edge);
-                ghostRoad.transform.rotation = HexEdge.GetRotation(edge);
+                ghostRoad.transform.position = edge.ToLocalCoords();
+                ghostRoad.transform.rotation = edge.ToLocalRot();
                 ghostRoad.Edge = edge;
             }
         }
@@ -204,7 +204,7 @@ public class Board : MonoBehaviour
         {
             HexCoords hexCoords = new HexCoords(x, startZ);
             int chosenTileIdx = random.Next(tileList.Count);
-            Tile tile = Instantiate(tileList[chosenTileIdx], this.transform.TransformPoint(HexCoords.ToLocalCoords(hexCoords)),
+            Tile tile = Instantiate(tileList[chosenTileIdx], this.transform.TransformPoint(hexCoords.ToLocalCoords()),
                 Quaternion.Euler(-90, 0, -90), this.transform).GetComponent<Tile>();
             //delete the chosen tile from the list so we don't use it again
             tileList.RemoveAt(chosenTileIdx);
