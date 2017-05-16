@@ -76,6 +76,11 @@ namespace Assets.util
             return new Vector3(localCoords.x, 0, localCoords.y);
         }
 
+        public override Quaternion ToLocalRot()
+        {
+            return Quaternion.Euler(-90, 0, -90);
+        }
+
         public static HexCoords FromLocalCoords(Vector3 localCoords)
         {
             Vector2 axialHexCoords = (localCoords.x * XBasisPixel) + (localCoords.z * ZBasisPixel);
