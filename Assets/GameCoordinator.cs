@@ -7,7 +7,7 @@ using System;
 public class GameCoordinator : MonoBehaviour
 {
 
-    public Board Board;
+    public BoardView Board;
     public GameObject PlayerPrefab;
 
     private List<Player> players;

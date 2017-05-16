@@ -15,7 +15,7 @@ public enum PlayerStates
 
 public class Player : MonoBehaviour
 {
-    public Board Board;
+    public BoardView Board;
     public PlayerColor Color;
     public GameCoordinator Coordinator;
 
