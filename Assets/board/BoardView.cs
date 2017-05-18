@@ -8,7 +8,7 @@ using System;
 
 public class BoardView : MonoBehaviour
 {
-    private Board board;
+    public Board Board { get; set; }
 
     PrefabContainer prefabContainer;
     private Dictionary<TileTypes, GameObject> tilePrefabs;
@@ -40,7 +40,7 @@ public class BoardView : MonoBehaviour
         }
         roadPrefab = prefabContainer.Get("road");
         boardCollider = GetComponent<BoxCollider>();
-        board.GenerateMap();
+        Board.GenerateMap();
         GenerateTileObjs();
         GenerateCollider();
     }
@@ -137,9 +137,9 @@ public class BoardView : MonoBehaviour
 
     private void GenerateTileObjs()
     {
-        foreach (HexCoords coords in board.TileMap.Keys)
+        foreach (HexCoords coords in Board.TileMap.Keys)
         {
-            TileTypes type = board.TileMap[coords];
+            TileTypes type = Board.TileMap[coords];
             Tile tile = InstantiateTile(coords, type);
             tileObjs.Add(coords, tile);
         }
