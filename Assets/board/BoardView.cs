@@ -5,10 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Assets.action;
 
 public class BoardView : MonoBehaviour
 {
     public Board Board { get; set; }
+
+    private IAction currentAction;
 
     PrefabContainer prefabContainer;
     private Dictionary<TileTypes, GameObject> tilePrefabs;
@@ -17,14 +20,11 @@ public class BoardView : MonoBehaviour
     private BoxCollider boardCollider;
 
     private Dictionary<UnitTypes, GameObject> unitPrefabs;
-    private Unit ghostUnit;
-
     private GameObject roadPrefab;
-    private Road ghostRoad;
 
 	void Start ()
     {
-        board = new Board();
+        Board = new Board();
         prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
         List<GameObject> tilePrefabsList = prefabContainer.GetWithPrefix("tile");
         tilePrefabs = new Dictionary<TileTypes, GameObject>();
@@ -48,91 +48,32 @@ public class BoardView : MonoBehaviour
 
     void Update ()
     {
+
 	}
 
-    public void SetGhostUnit(HexCorner newCorner, UnitTypes type, PlayerColor color)
+    public void SetCurrentAction(IAction action)
     {
-        //if the unit is null, create it
-        if (ghostUnit == null)
+        if (currentAction != null)
         {
-            ghostUnit = Instantiate(unitPrefabs[type], transform).GetComponent<Unit>();
-            ghostUnit.Color = color;
+            currentAction.Undo(this);
         }
-        //if the corner is the same as the temp's corner, nothing has changed
-        if (newCorner.Equals(ghostUnit.Location))
-        {
-            return;
-        }
-        else
-        {
-            if (board.IsValidUnitPlacement(newCorner, type, color))
-            {
-                //set the unit at this corner invisible, if it's there
-                if (board.Units.ContainsKey(newCorner))
-                {
-                    board.Units[newCorner].GetComponent<Renderer>().enabled = false;
-                }
-                //set the unit at the old corner visible, if its there
-                if (ghostUnit.Location != null && board.Units.ContainsKey(ghostUnit.Location))
-                {
-                    board.Units[ghostUnit.Location].GetComponent<Renderer>().enabled = true;
-                }
-                //move the ghost unit to the new location
-                ghostUnit.Location = newCorner;
-                ghostUnit.transform.position = transform.TransformPoint(newCorner.ToLocalCoords());
-            }
-        }
+        currentAction = action;
+        currentAction.Display(this);
     }
 
-    public bool PlaceGhostUnit()
+    public void ApplyCurrentAction()
     {
-        board.AddUnit(ghostUnit.Location, ghostUnit);
-        ghostUnit = null;
-        return true;
+        currentAction.Apply(this);
+        currentAction = null;
     }
 
-    public void SetGhostRoad(HexEdge edge, PlayerColor color)
+    public Unit InstantiateSettlement(HexCorner location, PlayerColor color)
     {
-        if (ghostRoad == null)
-        {
-            ghostRoad = Instantiate(roadPrefab, transform).GetComponent<Road>();
-            ghostRoad.Color = color;
-        }
-        if (edge.Equals(ghostRoad.Edge))
-        {
-            return;
-        }
-        else
-        {
-            if (board.IsValidRoad(edge))
-            {
-                ghostRoad.transform.position = edge.ToLocalCoords();
-                ghostRoad.transform.rotation = edge.ToLocalRot();
-                ghostRoad.Edge = edge;
-            }
-        }
-    }
-
-    public bool PlaceGhostRoad()
-    {
-        if (board.IsValidRoad(ghostRoad.Edge))
-        {
-            board.Roads.Add(ghostRoad.Edge, ghostRoad);
-            ghostRoad = null;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void SetUnitVisible(HexCorner corner, bool visible)
-    {
-        if (board.Units.ContainsKey(corner))
-        {
-            board.Units[corner].GetComponent<Renderer>().enabled = visible;
-        }
+        Unit unit = Instantiate(unitPrefabs[UnitTypes.Settlement], transform.TransformPoint(location.ToLocalCoords()), location.ToLocalRot(),
+            transform).GetComponent<Unit>();
+        unit.Type = UnitTypes.Settlement;
+        unit.Color = color;
+        return unit;
     }
 
     private void GenerateTileObjs()

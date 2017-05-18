@@ -5,11 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Assets.action;
 
 public enum PlayerStates
 {
     Idle,
-    PlacingUnit,
+    PlacingSettlement,
+    PlacingCity,
     PlacingRoad,
 }
 
@@ -50,12 +52,12 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                stateMachine.ChangeState(PlayerStates.PlacingUnit);
+                stateMachine.ChangeState(PlayerStates.PlacingSettlement);
                 placingUnitType = UnitTypes.Settlement;
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
-                stateMachine.ChangeState(PlayerStates.PlacingUnit);
+                stateMachine.ChangeState(PlayerStates.PlacingCity);
                 placingUnitType = UnitTypes.City;
             }
             else if (Input.GetKeyDown(KeyCode.R))
@@ -65,50 +67,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void PlacingUnit_Update()
+    public void PlacingSettlement_Update()
     {
-        Vector3? mouseHit = RaycastMouse();
-        if (mouseHit.HasValue)
+        Vector3? mousePos = RaycastMouse();
+        if (mousePos.HasValue)
         {
-            HexCorner corner = HexCorner.GetNearestCorner(mouseHit.Value);
-            Board.SetGhostUnit(corner, placingUnitType, Color);
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (Board.PlaceGhostUnit())
-                {
-                    stateMachine.ChangeState(PlayerStates.Idle);
-                }
-            }
+            PlaceSettlementAction action = new PlaceSettlementAction(HexCorner.GetNearestCorner(mousePos.Value), Color);
+            Board.SetCurrentAction(action);
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Board.ApplyCurrentAction();
+            stateMachine.ChangeState(PlayerStates.Idle);
         }
     }
-
-    public void PlacingUnit_Exit()
-    {
-        Coordinator.NextTurn();
-    }
-
-    public void PlacingRoad_Update()
-    {
-        Vector3? mouseHit = RaycastMouse();
-        if (mouseHit.HasValue)
-        {
-            HexEdge edge = HexEdge.GetNearestEdge(mouseHit.Value);
-            Board.SetGhostRoad(edge, Color);
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (Board.PlaceGhostRoad())
-                {
-                    stateMachine.ChangeState(PlayerStates.Idle);
-                }
-            }
-        }
-    }
-
-    public void PlacingRoad_Exit()
-    {
-        Coordinator.NextTurn();
-    }
-
 
     private Vector3? RaycastMouse()
     {
