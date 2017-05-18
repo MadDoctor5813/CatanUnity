@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.util
 {
 
-    class HexCornerGraph
+    public class HexCornerGraph
     {
 
         public Dictionary<HexCorner, HexCorner[]> Neighbors { get; set; }

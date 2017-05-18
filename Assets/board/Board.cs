@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Assets.board
 {
-    class Board
+    public class Board
     {
         private System.Random random;
 
