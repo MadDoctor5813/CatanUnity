@@ -38,6 +38,11 @@ namespace Assets.board
             Units.Add(intersection, unit);
         }
 
+        public void AddRoad(HexEdge edge, Road road)
+        {
+            Roads.Add(edge, road);
+        }
+
         public void GenerateMap()
         {
             //generate the list of tiles

@@ -75,6 +75,15 @@ public class BoardView : MonoBehaviour
         return unit;
     }
 
+    public Road InstantiateRoad(HexEdge edge, PlayerColor color)
+    {
+        Road road = Instantiate(roadPrefab, transform.TransformPoint(edge.ToLocalCoords()), edge.ToLocalRot(),
+            transform).GetComponent<Road>();
+        road.Edge = edge;
+        road.Color = color;
+        return road;
+    }
+
     public void SetUnitVisible(HexCorner location, bool visible)
     {
         Board.Units[location].GetComponent<Renderer>().enabled = visible;

@@ -103,6 +103,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void PlacingRoad_Update()
+    {
+        Vector3? mousePos = RaycastMouse();
+        if (mousePos.HasValue)
+        {
+            PlaceRoadAction action = new PlaceRoadAction(HexEdge.GetNearestEdge(mousePos.Value), Color);
+            if (action.IsValid(Board))
+            {
+                Board.SetCurrentAction(action);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Board.ApplyCurrentAction();
+                    stateMachine.ChangeState(PlayerStates.Idle);
+                }
+            }
+        }
+    }
+
     private Vector3? RaycastMouse()
     {
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
