@@ -25,10 +25,7 @@ namespace Assets.action
 
         public void Display(BoardView boardView)
         {
-            if (boardView.Board.IsValidSettlement(Location))
-            {
-                Settlement = boardView.InstantiateSettlement(Location, Color);
-            }
+            Settlement = boardView.InstantiateUnit(Location, Color, UnitTypes.Settlement);
         }
 
         public void Apply(BoardView boardView)
@@ -42,6 +39,11 @@ namespace Assets.action
             {
                 GameObject.Destroy(Settlement.gameObject);
             }
+        }
+
+        public bool IsValid(BoardView boardView)
+        {
+            return boardView.Board.IsValidSettlement(Location);
         }
     }
 }

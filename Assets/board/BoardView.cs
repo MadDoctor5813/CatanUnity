@@ -45,7 +45,6 @@ public class BoardView : MonoBehaviour
         GenerateCollider();
     }
 
-
     void Update ()
     {
 
@@ -53,12 +52,15 @@ public class BoardView : MonoBehaviour
 
     public void SetCurrentAction(IAction action)
     {
-        if (currentAction != null)
+        if (action.IsValid(this))
         {
-            currentAction.Undo(this);
+            if (currentAction != null)
+            {
+                currentAction.Undo(this);
+            }
+            currentAction = action;
+            currentAction.Display(this);
         }
-        currentAction = action;
-        currentAction.Display(this);
     }
 
     public void ApplyCurrentAction()
@@ -67,7 +69,7 @@ public class BoardView : MonoBehaviour
         currentAction = null;
     }
 
-    public Unit InstantiateSettlement(HexCorner location, PlayerColor color)
+    public Unit InstantiateUnit(HexCorner location, PlayerColor color, UnitTypes type)
     {
         Unit unit = Instantiate(unitPrefabs[UnitTypes.Settlement], transform.TransformPoint(location.ToLocalCoords()), location.ToLocalRot(),
             transform).GetComponent<Unit>();
