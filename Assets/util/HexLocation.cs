@@ -14,7 +14,7 @@ namespace Assets.util
         //Most classes won't need a custom rotation, so a default is provided
         public virtual Quaternion ToLocalRot()
         {
-            return Quaternion.identity;
+            return Quaternion.Euler(-90, 0, -90);
         }
 
     }
