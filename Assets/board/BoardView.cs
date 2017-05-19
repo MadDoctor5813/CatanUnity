@@ -68,9 +68,9 @@ public class BoardView : MonoBehaviour
 
     public Unit InstantiateUnit(HexCorner location, PlayerColor color, UnitTypes type)
     {
-        Unit unit = Instantiate(unitPrefabs[UnitTypes.Settlement], transform.TransformPoint(location.ToLocalCoords()), location.ToLocalRot(),
+        Unit unit = Instantiate(unitPrefabs[type], transform.TransformPoint(location.ToLocalCoords()), location.ToLocalRot(),
             transform).GetComponent<Unit>();
-        unit.Type = UnitTypes.Settlement;
+        unit.Type = type;
         unit.Color = color;
         return unit;
     }
