@@ -84,12 +84,22 @@ public class Player : MonoBehaviour
             }
         }
     }
-            Board.SetCurrentAction(action);
-        }
-        if (Input.GetMouseButtonDown(0))
+
+    public void PlacingCity_Update()
+    {
+        Vector3? mousePos = RaycastMouse();
+        if (mousePos.HasValue)
         {
-            Board.ApplyCurrentAction();
-            stateMachine.ChangeState(PlayerStates.Idle);
+            PlaceCityAction action = new PlaceCityAction(HexCorner.GetNearestCorner(mousePos.Value), Color);
+            if (action.IsValid(Board))
+            {
+                Board.SetCurrentAction(action);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Board.ApplyCurrentAction();
+                    stateMachine.ChangeState(PlayerStates.Idle);
+                }
+            }
         }
     }
 
