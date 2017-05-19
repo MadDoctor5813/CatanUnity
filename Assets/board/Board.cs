@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.board
 {
@@ -31,6 +32,7 @@ namespace Assets.board
             //if something's already there, delete it
             if (Units.ContainsKey(intersection))
             {
+                GameObject.Destroy(Units[intersection]);
                 Units.Remove(intersection);
             }
             Units.Add(intersection, unit);
