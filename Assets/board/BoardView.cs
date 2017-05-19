@@ -75,6 +75,11 @@ public class BoardView : MonoBehaviour
         return unit;
     }
 
+    public void SetUnitVisible(HexCorner location, bool visible)
+    {
+        Board.Units[location].GetComponent<Renderer>().enabled = visible;
+    }
+
     private void GenerateTileObjs()
     {
         foreach (HexCoords coords in Board.TileMap.Keys)

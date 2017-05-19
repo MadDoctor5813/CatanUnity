@@ -29,10 +29,14 @@ namespace Assets.action
         public void Display(BoardView boardView)
         {
             City = boardView.InstantiateUnit(Location, Color, UnitTypes.City);
+            //hide the settlement under this city
+            boardView.SetUnitVisible(Location, false);
         }
 
         public void Undo(BoardView boardView)
         {
+            //unhide the settlement under this city
+            boardView.SetUnitVisible(Location, true);
             if (City != null)
             {
                 GameObject.Destroy(City.gameObject);
