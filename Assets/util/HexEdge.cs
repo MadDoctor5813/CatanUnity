@@ -8,8 +8,8 @@ namespace Assets.util
 {
     public class HexEdge : HexLocation
     {
-        HexCorner Start { get; set; }
-        HexCorner End { get; set; }
+        public HexCorner Start { get; set; }
+        public HexCorner End { get; set; }
 
         public HexEdge(HexCorner start, HexCorner end)
         {

@@ -67,7 +67,7 @@ namespace Assets.util
             }
         }
 
-        private bool IsOutOfRange(HexCorner corner)
+        public bool IsOutOfRange(HexCorner corner)
         {
             HexCoords origin = new HexCoords(0, 0);
             for (int i = 0; i < 3; i++)

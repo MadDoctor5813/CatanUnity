@@ -92,7 +92,15 @@ namespace Assets.board
 
         public bool IsValidRoad(HexEdge edge)
         {
-            return !Roads.ContainsKey(edge);
+            if (Roads.ContainsKey(edge))
+            {
+                return false;
+            }
+            if (CornerGraph.IsOutOfRange(edge.Start) || CornerGraph.IsOutOfRange(edge.End))
+            {
+                return false;
+            }
+            return true;
         }
 
         private void GenerateMapColumn(int x, int startZ, int count, List<TileTypes> tileList)
