@@ -52,15 +52,12 @@ public class BoardView : MonoBehaviour
 
     public void SetCurrentAction(IAction action)
     {
-        if (action.IsValid(this))
+        if (currentAction != null)
         {
-            if (currentAction != null)
-            {
-                currentAction.Undo(this);
-            }
-            currentAction = action;
-            currentAction.Display(this);
+            currentAction.Undo(this);
         }
+        currentAction = action;
+        currentAction.Display(this);
     }
 
     public void ApplyCurrentAction()

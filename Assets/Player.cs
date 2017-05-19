@@ -73,6 +73,17 @@ public class Player : MonoBehaviour
         if (mousePos.HasValue)
         {
             PlaceSettlementAction action = new PlaceSettlementAction(HexCorner.GetNearestCorner(mousePos.Value), Color);
+            if (action.IsValid(Board))
+            {
+                Board.SetCurrentAction(action);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Board.ApplyCurrentAction();
+                    stateMachine.ChangeState(PlayerStates.Idle);
+                }
+            }
+        }
+    }
             Board.SetCurrentAction(action);
         }
         if (Input.GetMouseButtonDown(0))
