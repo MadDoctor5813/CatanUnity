@@ -35,6 +35,11 @@ public class Player : MonoBehaviour
         stateMachine = StateMachine<PlayerStates>.Initialize(this, PlayerStates.Idle);
 	}
 
+    public void ChangeState(PlayerStates state)
+    {
+        stateMachine.ChangeState(state);
+    }
+
     public void StartTurn()
     {
         Debug.Log(string.Format("Starting turn for {0}", Color.ToString()));
@@ -52,17 +57,17 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                stateMachine.ChangeState(PlayerStates.PlacingSettlement);
+                ChangeState(PlayerStates.PlacingSettlement);
                 placingUnitType = UnitTypes.Settlement;
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
-                stateMachine.ChangeState(PlayerStates.PlacingCity);
+                ChangeState(PlayerStates.PlacingCity);
                 placingUnitType = UnitTypes.City;
             }
             else if (Input.GetKeyDown(KeyCode.R))
             {
-                stateMachine.ChangeState(PlayerStates.PlacingRoad);
+                ChangeState(PlayerStates.PlacingRoad);
             }
         }
     }
@@ -79,7 +84,7 @@ public class Player : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Board.ApplyCurrentAction();
-                    stateMachine.ChangeState(PlayerStates.Idle);
+                    ChangeState(PlayerStates.Idle);
                 }
             }
         }
@@ -97,7 +102,7 @@ public class Player : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Board.ApplyCurrentAction();
-                    stateMachine.ChangeState(PlayerStates.Idle);
+                    ChangeState(PlayerStates.Idle);
                 }
             }
         }
@@ -115,7 +120,7 @@ public class Player : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Board.ApplyCurrentAction();
-                    stateMachine.ChangeState(PlayerStates.Idle);
+                    ChangeState(PlayerStates.Idle);
                 }
             }
         }
