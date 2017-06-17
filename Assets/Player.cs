@@ -75,6 +75,11 @@ public class Player : MonoBehaviour
                 {
                     ChangeState(PlayerStates.PlacingRoad);
                 }
+                else if (Input.GetKeyDown(KeyCode.N))
+                {
+                    Debug.Log(string.Format("Ending turn for {0}", Color.ToString()));
+                    Coordinator.NextTurn();
+                }
             }
         }
     }
