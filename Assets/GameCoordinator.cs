@@ -3,12 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MonsterLove.StateMachine;
+
+public enum GameStates
+{
+    Setup,
+    InProgress
+}
 
 public class GameCoordinator : MonoBehaviour
 {
 
     public BoardView Board;
     public GameObject PlayerPrefab;
+
+
+    public StateMachine<GameStates> GameState;
 
     private List<Player> players;
     private int turnIdx = 0;
@@ -17,6 +27,8 @@ public class GameCoordinator : MonoBehaviour
 	void Start ()
 	{
         InitializePlayers();
+        GameState = StateMachine<GameStates>.Initialize(this);
+        GameState.ChangeState(GameStates.Setup);
         currentPlayer = players[turnIdx];
         currentPlayer.StartTurn();
 	}
