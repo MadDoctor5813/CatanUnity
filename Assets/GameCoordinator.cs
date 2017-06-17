@@ -57,6 +57,12 @@ public class GameCoordinator : MonoBehaviour
 
     public void NextTurn()
     {
+        StartCoroutine(NextTurnCoroutine());
+    }
+
+    private IEnumerator NextTurnCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
         currentPlayer.EndTurn();
         turnIdx = (turnIdx + 1) % players.Count;
         if (turnIdx == 0)
