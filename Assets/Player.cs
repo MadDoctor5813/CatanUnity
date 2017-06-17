@@ -35,9 +35,9 @@ public class Player : MonoBehaviour
         stateMachine = StateMachine<PlayerStates>.Initialize(this, PlayerStates.Idle);
 	}
 
-    public void ChangeState(PlayerStates state)
+    public void ChangeState(PlayerStates state, StateTransition transition = StateTransition.Safe)
     {
-        stateMachine.ChangeState(state);
+        stateMachine.ChangeState(state, transition);
     }
 
     public void StartTurn()
