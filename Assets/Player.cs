@@ -55,19 +55,26 @@ public class Player : MonoBehaviour
     {
         if (isMyTurn)
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Coordinator.GameState.State == GameStates.Setup)
             {
                 ChangeState(PlayerStates.PlacingSettlement);
-                placingUnitType = UnitTypes.Settlement;
             }
-            else if (Input.GetKeyDown(KeyCode.C))
+            else
             {
-                ChangeState(PlayerStates.PlacingCity);
-                placingUnitType = UnitTypes.City;
-            }
-            else if (Input.GetKeyDown(KeyCode.R))
-            {
-                ChangeState(PlayerStates.PlacingRoad);
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    ChangeState(PlayerStates.PlacingSettlement);
+                    placingUnitType = UnitTypes.Settlement;
+                }
+                else if (Input.GetKeyDown(KeyCode.C))
+                {
+                    ChangeState(PlayerStates.PlacingCity);
+                    placingUnitType = UnitTypes.City;
+                }
+                else if (Input.GetKeyDown(KeyCode.R))
+                {
+                    ChangeState(PlayerStates.PlacingRoad);
+                }
             }
         }
     }
@@ -84,7 +91,14 @@ public class Player : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Board.ApplyCurrentAction();
-                    ChangeState(PlayerStates.Idle);
+                    if (Coordinator.GameState.State == GameStates.Setup)
+                    {
+                        ChangeState(PlayerStates.PlacingRoad);
+                    }
+                    else if (Coordinator.GameState.State == GameStates.InProgress)
+                    {
+                        ChangeState(PlayerStates.Idle);
+                    }
                 }
             }
         }
@@ -121,6 +135,10 @@ public class Player : MonoBehaviour
                 {
                     Board.ApplyCurrentAction();
                     ChangeState(PlayerStates.Idle);
+                    if (Coordinator.GameState.State == GameStates.Setup)
+                    {
+                        Coordinator.NextTurn();
+                    }
                 }
             }
         }

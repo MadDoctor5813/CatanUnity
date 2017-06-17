@@ -20,6 +20,8 @@ public class GameCoordinator : MonoBehaviour
 
     public StateMachine<GameStates> GameState;
 
+    private int turnsPassed = 0;
+
     private List<Player> players;
     private int turnIdx = 0;
     private Player currentPlayer = null;
@@ -57,8 +59,21 @@ public class GameCoordinator : MonoBehaviour
     {
         currentPlayer.EndTurn();
         turnIdx = (turnIdx + 1) % players.Count;
+        if (turnIdx == 0)
+        {
+            turnsPassed++;
+        }
         currentPlayer = players[turnIdx];
         currentPlayer.StartTurn();
+    }
+
+    public void Setup_Update()
+    {
+        if (turnsPassed == 2)
+        {
+            GameState.ChangeState(GameStates.InProgress);
+            turnsPassed = 0;
+        }
     }
 
     void Update () 
