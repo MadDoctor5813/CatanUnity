@@ -73,7 +73,7 @@ namespace Assets.board
             var unitLocations = Units.Keys;
             foreach (var location in unitLocations)
             {
-                if ((Units[location].Type == UnitTypes.Settlement || Units[location].Type == UnitTypes.City) && CornerGraph.CornerDistance(location, corner) < 2)
+                if ((Units[location].Type == UnitTypes.Settlement || Units[location].Type == UnitTypes.City) && CornerGraph.GraphSearch(location, corner).Length < 2)
                 {
                     return false;
                 }

@@ -18,8 +18,12 @@ namespace Assets.util
             Build(new HexCorner(new HexCoords(0, 0), new HexCoords(0, 1), new HexCoords(-1, 1)));
         }
 
-        public int CornerDistance(HexCorner start, HexCorner end)
+        public HexPath GraphSearch(HexCorner start, HexCorner end)
         {
+            HexPath path = new HexPath();
+            path.Start = start;
+            path.End = end;
+            path.Nodes = new List<HexCorner>();
             Dictionary<HexCorner, HexCorner> parents = new Dictionary<HexCorner, HexCorner>();
             Queue<HexCorner> queue = new Queue<HexCorner>();
             queue.Enqueue(start);
@@ -45,10 +49,12 @@ namespace Assets.util
             HexCorner pathNode = end;
             while (!pathNode.Equals(start))
             {
+                path.Nodes.Add(pathNode);
                 pathNode = parents[pathNode];
                 distance++;
             }
-            return distance;
+            path.Length = distance;
+            return path;
         }
 
         private void Build(HexCorner corner)
