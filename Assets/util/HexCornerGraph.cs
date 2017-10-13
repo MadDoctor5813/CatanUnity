@@ -57,7 +57,15 @@ namespace Assets.util
             while (!pathNode.Equals(start))
             {
                 path.Nodes.Add(pathNode);
-                pathNode = parents[pathNode];
+                if (parents.ContainsKey(pathNode))
+                {
+                    pathNode = parents[pathNode];
+                }
+                else
+                {
+                    //there is no path that gets us back to the start, return a null path
+                    return null;
+                }
                 distance++;
             }
             path.Length = distance;
