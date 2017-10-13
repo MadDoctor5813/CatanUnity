@@ -18,13 +18,16 @@ namespace Assets.board
 
         public HexCornerGraph CornerGraph { get; set; }
 
-        public Board()
+        private GameCoordinator coordinator;
+
+        public Board(GameCoordinator coordinator)
         {
+            this.coordinator = coordinator;
             random = new System.Random();
             TileMap = new Dictionary<HexCoords, TileTypes>();
             Units = new Dictionary<HexCorner, Unit>();
             Roads = new Dictionary<HexEdge, Road>();
-            CornerGraph = new HexCornerGraph();
+            CornerGraph = new HexCornerGraph(this);
         }
 
         public void AddUnit(HexCorner intersection, Unit unit)

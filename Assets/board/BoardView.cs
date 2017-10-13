@@ -9,6 +9,8 @@ using Assets.action;
 
 public class BoardView : MonoBehaviour
 {
+    public GameCoordinator coordinator;
+
     public Board Board { get; set; }
 
     private IAction currentAction;
@@ -24,7 +26,7 @@ public class BoardView : MonoBehaviour
 
 	void Start ()
     {
-        Board = new Board();
+        Board = new Board(coordinator);
         prefabContainer = GameObject.Find("PrefabContainer").GetComponent<PrefabContainer>();
         List<GameObject> tilePrefabsList = prefabContainer.GetWithPrefix("tile");
         tilePrefabs = new Dictionary<TileTypes, GameObject>();
