@@ -22,7 +22,7 @@ namespace Assets.util
             Build(new HexCorner(new HexCoords(0, 0), new HexCoords(0, 1), new HexCoords(-1, 1)));
         }
 
-        public HexPath GraphSearch(HexCorner start, HexCorner end)
+        public HexPath GraphSearch(HexCorner start, HexCorner end, Func<HexCorner, HexCorner, bool> validEdgeFunc = null)
         {
             HexPath path = new HexPath();
             path.Start = start;
@@ -41,10 +41,13 @@ namespace Assets.util
                 HexCorner[] currNeighbors = Neighbors[current];
                 for (int i = 0; i < currNeighbors.Length; i++)
                 {
-                    if (!parents.ContainsKey(currNeighbors[i]))
+                    if (validEdgeFunc == null || validEdgeFunc(current, currNeighbors[i]) == true)
                     {
-                        parents.Add(currNeighbors[i], current);
-                        queue.Enqueue(currNeighbors[i]);
+                        if (!parents.ContainsKey(currNeighbors[i]))
+                        {
+                            parents.Add(currNeighbors[i], current);
+                            queue.Enqueue(currNeighbors[i]);
+                        }
                     }
                 }
             }
