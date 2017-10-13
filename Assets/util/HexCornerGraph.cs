@@ -64,6 +64,15 @@ namespace Assets.util
             return path;
         }
 
+        public HexPath GraphRoadSearch(HexCorner start, HexCorner end)
+        {
+            return GraphSearch(start, end, (edgeStart, edgeEnd) =>
+            {
+                HexEdge edge = new HexEdge(edgeStart, edgeEnd);
+                return board.Roads.ContainsKey(edge);
+            });
+        }
+
         private void Build(HexCorner corner)
         {
             //dont add duplicates
