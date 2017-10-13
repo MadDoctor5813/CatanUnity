@@ -41,7 +41,7 @@ namespace Assets.action
 
         public bool IsValid(BoardView boardView)
         {
-            return boardView.Board.IsValidRoad(Edge);
+            return boardView.Board.IsValidRoad(Color, Edge);
         }
     }
 }

@@ -104,7 +104,7 @@ namespace Assets.board
             return false;
         }
 
-        public bool IsValidRoad(HexEdge edge)
+        public bool IsValidRoad(PlayerColor color, HexEdge edge)
         {
             if (Roads.ContainsKey(edge))
             {
@@ -113,6 +113,15 @@ namespace Assets.board
             if (CornerGraph.IsOutOfRange(edge.Start) || CornerGraph.IsOutOfRange(edge.End))
             {
                 return false;
+            }
+            if (coordinator.GameState.State == GameStates.Setup)
+            {
+                //check if there's a settlement on one of the road's corners
+                if (!((Units.ContainsKey(edge.Start) && Units[edge.Start].Color == color) ||
+                    (Units.ContainsKey(edge.End) && Units[edge.End].Color == color)))
+                {
+                    return false;
+                }
             }
             return true;
         }
