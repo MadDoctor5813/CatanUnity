@@ -68,18 +68,29 @@ namespace Assets.board
 
         public bool IsValidUnitPlacement(HexCorner corner, UnitTypes type, PlayerColor color)
         {
-            return (type == UnitTypes.Settlement && IsValidSettlement(corner)) || (type == UnitTypes.City && IsValidCity(corner, color));
+            return (type == UnitTypes.Settlement && IsValidSettlement(color, corner)) || (type == UnitTypes.City && IsValidCity(corner, color));
         }
 
-        public bool IsValidSettlement(HexCorner corner)
+        public bool IsValidSettlement(PlayerColor color, HexCorner corner)
         {
             var unitLocations = Units.Keys;
+            //true if this placement is connected by road to a settlement of the same color
+            bool isConnected = false;
             foreach (var location in unitLocations)
             {
                 if ((Units[location].Type == UnitTypes.Settlement || Units[location].Type == UnitTypes.City) && CornerGraph.GraphSearch(location, corner).Length < 2)
                 {
                     return false;
                 }
+                if (Units[location].Color == color && CornerGraph.GraphRoadSearch(corner, location) != null)
+                {
+                    isConnected = true;
+                }
+            }
+            //the road restriction only applies if the game isn't in setup mode
+            if (coordinator.GameState.State != GameStates.Setup && isConnected == false)
+            {
+                return false;
             }
             return true;
         }

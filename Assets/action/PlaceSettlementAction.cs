@@ -43,7 +43,7 @@ namespace Assets.action
 
         public bool IsValid(BoardView boardView)
         {
-            return boardView.Board.IsValidSettlement(Location);
+            return boardView.Board.IsValidSettlement(Color, Location);
         }
     }
 }
