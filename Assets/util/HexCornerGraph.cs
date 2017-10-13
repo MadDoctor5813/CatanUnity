@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,11 @@ namespace Assets.util
 
         public Dictionary<HexCorner, HexCorner[]> Neighbors { get; set; }
 
-        public HexCornerGraph()
+        private Board board;
+
+        public HexCornerGraph(Board board)
         {
+            this.board = board;
             Neighbors = new Dictionary<HexCorner, HexCorner[]>();
 
             Build(new HexCorner(new HexCoords(0, 0), new HexCoords(0, 1), new HexCoords(-1, 1)));
